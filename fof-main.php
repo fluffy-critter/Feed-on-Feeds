@@ -579,7 +579,9 @@ function fof_get_items($user_id, $feed = NULL, $what = "unread", $when = NULL, $
 
 	for ($i = 0; $i < count($items); $i++) {
 		foreach ($fof_item_filters as $filter) {
-			$items[$i]['item_content'] = $filter($items[$i]['item_content']);
+			if ($items[$i]['item_content']) {
+				$items[$i]['item_content'] = $filter($items[$i]['item_content']);
+			}
 		}
 	}
 
@@ -1571,18 +1573,18 @@ function fof_render_feed_row($f) {
 	$feed_update_url = fof_url('update.php', array('feed' => $f['feed_id']));
 
 	switch ($fof_prefs_obj->get('sidebar_style')) {
-		case 'simple':/* feed_url feed_unread feed_title */
+		case 'simple': /* feed_url feed_unread feed_title */
 			$out .= '	<td class="source"><a href="' . $f['feed_url'] . '" title="feed">' . $image_html . '</a></td>' . "\n";
 
 			$out .= '	<td class="unread">' . (empty($unread) ? '' : $unread) . '</td>';
 
 			$out .= '	<td class="title"><a href="' . ($unread ? $feed_view_unread_url : $feed_view_all_url) . '">' . $title . '</a></td>' . "\n";
 
-		/* controls */
+			/* controls */
 			$out .= '	<td class="controls"><a href="' . $feed_unsubscribe_url . '" title="delete" onclick="return sb_unsub_conf(' . $title_json . ');">[x]</a></td>' . "\n";
 			break;
 
-		case 'fancy':/* feed_url max_date feed_unread feed_title */
+		case 'fancy': /* feed_url max_date feed_unread feed_title */
 			$out .= '	<td class="source"><a href="' . $link . '" ' . ($fof_prefs_obj->get('item_target') ? ' target="_blank"' : '') . '>' . $image_html . '</a></td>' . "\n";
 
 			$out .= '	<td class="latest"><span title="' . $f['lateststr'] . '" id="' . $f['feed_id'] . '-lateststr">' . $f['lateststrabbr'] . '</span></td>' . "\n";
@@ -1596,7 +1598,7 @@ function fof_render_feed_row($f) {
 
 			$out .= '	<td class="title"><a href="' . ($unread ? $feed_view_unread_url : $feed_view_all_url) . '" title="' . ($unread ? ($unread . ' new of ') : '') . $items . ' total items">' . $title . '</a></td>' . "\n";
 
-		/* controls */
+			/* controls */
 			$out .= '	<td class="controls">';
 			$out .= '<ul class="feedmenu">';
 			$out .= '<li>';
@@ -1614,7 +1616,7 @@ function fof_render_feed_row($f) {
 			$out .= '</td>' . "\n";
 			break;
 
-		default:/* feed_age max_date feed_unread feed_url feed_title */
+		default: /* feed_age max_date feed_unread feed_url feed_title */
 			$out .= '	<td class="updated"><span title="' . $f['agestr'] . '" id="' . $f['feed_id'] . '-agestr">' . $f['agestrabbr'] . '</span></td>' . "\n";
 
 			$out .= '	<td class="latest"><span title="' . $f['lateststr'] . '" id="' . $f['feed_id'] . '-lateststr">' . $f['lateststrabbr'] . '</span></td>' . "\n";
@@ -1631,7 +1633,7 @@ function fof_render_feed_row($f) {
 
 			$out .= '	<td class="title"><a href="' . $link . '" title="home page"' . ($fof_prefs_obj->get('item_target') ? ' target="_blank"' : '') . '><b>' . $title . '</b></a></td>' . "\n";
 
-		/* controls */
+			/* controls */
 			$out .= '	<td class="controls"><span class="nowrap">';
 			$out .= ' <a href="' . $feed_update_url . '" title="update">u</a>';
 			$out .= ' <a href="#" title="mark all read" onclick="return sb_read_conf(' . $title_json . ', ' . $f['feed_id'] . ');">m</a>';
