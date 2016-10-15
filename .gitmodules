@@ -1,0 +1,3 @@
+[submodule "library/php-urljoin"]
+	path = library/php-urljoin
+	url = https://github.com/plaidfluff/php-urljoin.git

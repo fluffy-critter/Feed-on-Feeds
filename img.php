@@ -2,16 +2,15 @@
 // Image proxy for FeedOnFeeds, to assist with hotlinking and security policy issues
 
 require_once 'fof-main.php';
+require_once 'library/php-urljoin/src/urljoin.php';
 
 if (!$_GET['item']) die("Missing item ID");
 if (!$_GET['url']) die("Missing URL");
 
-// TODO: make sure we're logged in
-
 $item = fof_get_item(NULL, $_GET['item']);
 if (!$item) die("couldn't get item");
 
-// TODO: fix relative URLs with $item['item_link']
+$url = urljoin($item['item_link'], $_GET['url']);
 
 // This is a really annoying way to get the final header chunk. There's got to be a better way...
 $final = false;
@@ -25,7 +24,7 @@ function dump_headers($ch, $header) {
     return strlen($header);
 }
 
-$curl = curl_init($_GET['url']);
+$curl = curl_init($url);
 curl_setopt_array($curl, array(
 	CURLOPT_REFERER => $item['item_link'],
 	CURLOPT_HEADERFUNCTION => 'dump_headers',
@@ -36,4 +35,4 @@ curl_setopt_array($curl, array(
 
 curl_exec($curl);
 curl_close($curl);
-?>
+
