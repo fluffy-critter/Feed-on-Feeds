@@ -861,6 +861,7 @@ function fof_parse($url, $body = null)
 
 	$pie = fof_new_parser();
 	if ($body) {
+		fof_log("got body: $body")
 		$pie->set_raw_data($body);
 	} else {
 		$pie->set_feed_url($url);
