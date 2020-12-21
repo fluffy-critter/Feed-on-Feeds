@@ -58,7 +58,7 @@ if (isset($_GET['hub_mode']) && $_GET['hub_mode'] == 'subscribe') {
 
 // We're responding to a push response.
 fof_log("Got a WebSub push notification for feed $feed_id");
-fof_update_feed($feed_id, $HTTP_RAW_POST_BODY);
+fof_update_feed($feed_id);
 ?>
 
 Updated feed <?=$feed_id?>.
